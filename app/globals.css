@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --pg-bg: #0B1929;
+    --pg-bg2: #0F2035;
+    --pg-bg3: #152840;
+    --pg-nav: #07111E;
+    --pg-teal: #3082A8;
+    --pg-teal2: #4AAECF;
+    --pg-teal3: rgba(48, 130, 168, 0.12);
+    --pg-teal4: rgba(48, 130, 168, 0.25);
+    --pg-border: rgba(48, 130, 168, 0.2);
+    --pg-border2: rgba(48, 130, 168, 0.35);
+    --pg-text: #D4EAF7;
+    --pg-text2: #6FA8C8;
+    --pg-text3: #3D6E8A;
+    --pg-gold: #D4A843;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    background-color: var(--pg-bg);
+    color: var(--pg-text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply text-white font-semibold px-4 py-2 rounded-lg transition-colors duration-150 text-sm;
+    background-color: var(--pg-teal);
+  }
+  .btn-primary:hover {
+    background-color: var(--pg-teal2);
+  }
+  .btn-secondary {
+    @apply font-semibold px-4 py-2 rounded-lg transition-colors duration-150 text-sm;
+    background-color: var(--pg-bg3);
+    color: var(--pg-text2);
+    border: 1px solid var(--pg-border);
+  }
+  .btn-secondary:hover {
+    background-color: var(--pg-teal3);
+    color: var(--pg-text);
+    border-color: var(--pg-teal);
+  }
+  .btn-danger {
+    @apply bg-red-700 hover:bg-red-800 text-white font-semibold px-4 py-2 rounded-lg transition-colors duration-150 text-sm;
+  }
+  .input-field {
+    @apply w-full px-3 py-2 rounded-lg text-sm focus:outline-none transition-all;
+    background-color: var(--pg-bg3);
+    border: 1px solid var(--pg-border);
+    color: var(--pg-text);
+  }
+  .input-field:focus {
+    border-color: var(--pg-teal);
+    box-shadow: 0 0 0 2px rgba(48, 130, 168, 0.2);
+  }
+  .input-field::placeholder {
+    color: var(--pg-text3);
+  }
+  .card {
+    @apply rounded-xl;
+    background-color: var(--pg-bg2);
+    border: 1px solid var(--pg-border);
+  }
+  .label {
+    @apply block text-xs font-semibold uppercase tracking-wide mb-1;
+    color: var(--pg-text3);
+  }
+}

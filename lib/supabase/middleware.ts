@@ -10,8 +10,9 @@ export async function updateSession(request: NextRequest) {
     {
       cookies: {
         getAll() { return request.cookies.getAll() },
-setAll(cookiesToSet: { name: string; value: string; options?: never }[]) {
-        supabaseResponse = NextResponse.next({ request })
+        setAll(cookiesToSet: { name: string; value: string; options?: never }[]) {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+          supabaseResponse = NextResponse.next({ request })
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options as never)
           )

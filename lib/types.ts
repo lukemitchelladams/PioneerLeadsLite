@@ -1,6 +1,6 @@
 export type LeadSource = 'google-mb' | 'google-maps' | 'angi' | 'thumbtack' | 'facebook' | 'instagram' | 'linkedin' | 'other'
 export type LeadType = 'residential' | 'commercial'
-export type LeadStatus = 'new' | 'contacted' | 'waiting-response' | 'quoted' | 'won' | 'lost'
+export type LeadStatus = 'new' | 'contacted' | 'waiting-response' | 'quoted' | 'passed-to-sales' | 'won' | 'lost'
 
 export interface Lead {
   id: string
@@ -43,6 +43,7 @@ export const LEAD_STATUS_LABELS: Record<LeadStatus, string> = {
   contacted: 'Contacted',
   'waiting-response': 'Waiting Response',
   quoted: 'Quoted',
+  'passed-to-sales': 'Passed Off to Sales',
   won: 'Won',
   lost: 'Lost',
 }

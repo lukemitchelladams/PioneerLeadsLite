@@ -29,6 +29,7 @@ const STATUS_COLORS: Record<LeadStatus, { bg: string; text: string; border: stri
   contacted: { bg: 'rgba(212,168,67,0.13)', text: '#D4A843', border: 'rgba(212,168,67,0.3)' },
   'waiting-response': { bg: 'rgba(251,146,60,0.13)', text: '#FB923C', border: 'rgba(251,146,60,0.3)' },
   quoted: { bg: 'rgba(160,130,230,0.13)', text: '#C4AAED', border: 'rgba(160,130,230,0.3)' },
+  'passed-to-sales': { bg: 'rgba(48,130,168,0.13)', text: '#4AAECF', border: 'rgba(48,130,168,0.3)' },
   won: { bg: 'rgba(92,201,138,0.13)', text: '#5CC98A', border: 'rgba(92,201,138,0.3)' },
   lost: { bg: 'rgba(230,100,100,0.13)', text: '#E87070', border: 'rgba(230,100,100,0.3)' },
 }

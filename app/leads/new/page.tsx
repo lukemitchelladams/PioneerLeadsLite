@@ -50,7 +50,6 @@ export default function NewLeadPage() {
   const [type, setType] = useState<LeadType>('residential')
   const [leadSource, setLeadSource] = useState<LeadSource | ''>('')
   const [otherSource, setOtherSource] = useState('')
-  const [passedTo, setPassedTo] = useState('')
   const [notes, setNotes] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -74,7 +73,6 @@ export default function NewLeadPage() {
         type,
         lead_source: leadSource,
         other_source: leadSource === 'other' ? otherSource.trim() : null,
-        passed_to: passedTo.trim() || null,
         status: 'new',
       })
       .select()
@@ -188,11 +186,6 @@ export default function NewLeadPage() {
                 <input type="text" value={otherSource} onChange={e => setOtherSource(e.target.value)} style={inp} placeholder="Type the lead source..." />
               </div>
             )}
-          </div>
-
-          <div style={card}>
-            <div style={sectionTitle}>Passed Lead To <span style={{ textTransform: 'none', letterSpacing: 0, fontSize: '11px', color: '#3D6E8A', fontWeight: 400 }}>(optional)</span></div>
-            <input type="text" value={passedTo} onChange={e => setPassedTo(e.target.value)} style={inp} placeholder="Enter salesperson name..." />
           </div>
 
           <div style={card}>

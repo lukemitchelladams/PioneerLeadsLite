@@ -1,4 +1,4 @@
-export type LeadSource = 'walk-in' | 'phone-call' | 'google-mb' | 'angi' | 'thumbtack' | 'other'
+export type LeadSource = 'google-mb' | 'google-maps' | 'angi' | 'thumbtack' | 'facebook' | 'instagram' | 'linkedin' | 'other'
 export type LeadType = 'residential' | 'commercial'
 export type LeadStatus = 'new' | 'contacted' | 'waiting-response' | 'quoted' | 'won' | 'lost'
 
@@ -14,6 +14,8 @@ export interface Lead {
   address: string
   type: LeadType
   lead_source: LeadSource
+  other_source?: string
+  passed_to?: string
   status: LeadStatus
 }
 
@@ -26,11 +28,13 @@ export interface LeadNote {
 }
 
 export const LEAD_SOURCE_LABELS: Record<LeadSource, string> = {
-  'walk-in': 'Walk-In',
-  'phone-call': 'Phone Call',
   'google-mb': 'Google My Business',
+  'google-maps': 'Google Maps',
   'angi': 'Angi',
   'thumbtack': 'Thumbtack',
+  'facebook': 'Facebook',
+  'instagram': 'Instagram',
+  'linkedin': 'LinkedIn',
   'other': 'Other',
 }
 

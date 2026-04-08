@@ -9,10 +9,11 @@ import Navbar from '@/components/Navbar'
 import { LeadSource, LeadType, LEAD_SOURCE_LABELS } from '@/lib/types'
 import { ArrowLeft, CheckCircle } from 'lucide-react'
 
-const LEAD_SOURCES: LeadSource[] = ['walk-in', 'phone-call', 'google-mb', 'angi', 'thumbtack', 'other']
+const LEAD_SOURCES: LeadSource[] = ['google-mb', 'google-maps', 'angi', 'thumbtack', 'facebook', 'instagram', 'linkedin', 'other']
 const SOURCE_ICONS: Record<LeadSource, string> = {
-  'walk-in': '🚶', 'phone-call': '📞', 'google-mb': '🔍',
-  'angi': '🔧', 'thumbtack': '📌', 'other': '💬',
+  'google-mb': '🔍', 'google-maps': '🗺️', 'angi': '🔧',
+  'thumbtack': '📌', 'facebook': '📘', 'instagram': '📸',
+  'linkedin': '💼', 'other': '💬',
 }
 
 const card: React.CSSProperties = {
@@ -48,6 +49,8 @@ export default function NewLeadPage() {
   const [leadDate, setLeadDate] = useState(today)
   const [type, setType] = useState<LeadType>('residential')
   const [leadSource, setLeadSource] = useState<LeadSource | ''>('')
+  const [otherSource, setOtherSource] = useState('')
+  const [passedTo, setPassedTo] = useState('')
   const [notes, setNotes] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -55,6 +58,7 @@ export default function NewLeadPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!leadSource) { setError('Please select a lead source.'); return }
+    if (leadSource === 'other' && !otherSource.trim()) { setError('Please specify the lead source.'); return }
     setLoading(true)
     setError('')
 
@@ -69,6 +73,8 @@ export default function NewLeadPage() {
         lead_date: leadDate || today,
         type,
         lead_source: leadSource,
+        other_source: leadSource === 'other' ? otherSource.trim() : null,
+        passed_to: passedTo.trim() || null,
         status: 'new',
       })
       .select()
@@ -80,7 +86,6 @@ export default function NewLeadPage() {
       return
     }
 
-    // FIX 1: Explicit null guard — should never happen but prevents crash
     if (!lead) {
       setError('Failed to create lead. Please try again.')
       setLoading(false)
@@ -91,7 +96,7 @@ export default function NewLeadPage() {
       await supabase.from('lead_notes').insert({ lead_id: lead.id, content: notes.trim() })
     }
 
-    router.push(`/leads/${lead.id}`)
+    router.push('/leads/' + lead.id)
   }
 
   const typeBtn = (t: LeadType, label: string, icon: string) => (
@@ -111,55 +116,46 @@ export default function NewLeadPage() {
     <div className="min-h-screen" style={{ backgroundColor: '#0B1929' }}>
       <Navbar />
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
         <div className="mb-7">
           <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-sm font-medium mb-4 transition-colors"
             style={{ color: '#3D6E8A' }}>
             <ArrowLeft className="w-4 h-4" /> Back to Dashboard
           </Link>
           <h1 className="text-2xl font-bold" style={{ color: '#D4EAF7' }}>Add New Lead</h1>
-          <p className="text-sm mt-1" style={{ color: '#3D6E8A' }}>Enter the customer&apos;s information below</p>
+          <p className="text-sm mt-1" style={{ color: '#3D6E8A' }}>Enter the customer's information below</p>
         </div>
 
         <form onSubmit={handleSubmit}>
-          {/* Customer Info */}
           <div style={card}>
             <div style={sectionTitle}>Customer Information</div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label style={lbl}>First Name *</label>
-                <input type="text" value={firstName} onChange={e => setFirstName(e.target.value)}
-                  style={inp} placeholder="John" required />
+                <input type="text" value={firstName} onChange={e => setFirstName(e.target.value)} style={inp} placeholder="John" required />
               </div>
               <div>
                 <label style={lbl}>Last Name *</label>
-                <input type="text" value={lastName} onChange={e => setLastName(e.target.value)}
-                  style={inp} placeholder="Smith" required />
+                <input type="text" value={lastName} onChange={e => setLastName(e.target.value)} style={inp} placeholder="Smith" required />
               </div>
               <div>
                 <label style={lbl}>Phone Number</label>
-                <input type="tel" value={phone} onChange={e => setPhone(e.target.value)}
-                  style={inp} placeholder="(555) 123-4567" />
+                <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} style={inp} placeholder="(555) 123-4567" />
               </div>
               <div>
                 <label style={lbl}>Email Address</label>
-                <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                  style={inp} placeholder="john@example.com" />
+                <input type="email" value={email} onChange={e => setEmail(e.target.value)} style={inp} placeholder="john@example.com" />
               </div>
               <div>
                 <label style={lbl}>Date of Lead *</label>
-                <input type="date" value={leadDate} onChange={e => setLeadDate(e.target.value)}
-                  style={{ ...inp, colorScheme: 'dark' }} required />
+                <input type="date" value={leadDate} onChange={e => setLeadDate(e.target.value)} style={{ ...inp, colorScheme: 'dark' }} required />
               </div>
               <div className="sm:col-span-2">
                 <label style={lbl}>Address</label>
-                <input type="text" value={address} onChange={e => setAddress(e.target.value)}
-                  style={inp} placeholder="123 Main St, City, State 12345" />
+                <input type="text" value={address} onChange={e => setAddress(e.target.value)} style={inp} placeholder="123 Main St, City, State 12345" />
               </div>
             </div>
           </div>
 
-          {/* Project Type */}
           <div style={card}>
             <div style={sectionTitle}>Project Type</div>
             <div className="grid grid-cols-2 gap-3">
@@ -168,7 +164,6 @@ export default function NewLeadPage() {
             </div>
           </div>
 
-          {/* Lead Source */}
           <div style={card}>
             <div style={sectionTitle}>Lead Source *</div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -187,9 +182,19 @@ export default function NewLeadPage() {
               ))}
             </div>
             {!leadSource && <p className="text-xs mt-3" style={{ color: '#3D6E8A' }}>Select where this lead came from</p>}
+            {leadSource === 'other' && (
+              <div className="mt-3">
+                <label style={lbl}>Specify Source *</label>
+                <input type="text" value={otherSource} onChange={e => setOtherSource(e.target.value)} style={inp} placeholder="Type the lead source..." />
+              </div>
+            )}
           </div>
 
-          {/* Initial Note */}
+          <div style={card}>
+            <div style={sectionTitle}>Passed Lead To <span style={{ textTransform: 'none', letterSpacing: 0, fontSize: '11px', color: '#3D6E8A', fontWeight: 400 }}>(optional)</span></div>
+            <input type="text" value={passedTo} onChange={e => setPassedTo(e.target.value)} style={inp} placeholder="Enter salesperson name..." />
+          </div>
+
           <div style={card}>
             <div style={{ ...sectionTitle, display: 'flex', alignItems: 'center', gap: '6px' }}>
               Initial Notes

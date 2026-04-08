@@ -67,6 +67,7 @@ export default function DashboardPage() {
   const [statusFilter, setStatusFilter] = useState<LeadStatus | 'all'>('all')
   const [typeFilter, setTypeFilter] = useState<LeadType | 'all'>('all')
   const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [sortBy, setSortBy] = useState('date')
 
   const fetchLeads = useCallback(async () => {
     const { data } = await supabase.from('leads').select('*').order('lead_date', { ascending: false, nullsFirst: false })
@@ -87,8 +88,25 @@ export default function DashboardPage() {
     if (sourceFilter !== 'all') result = result.filter(l => l.lead_source === sourceFilter)
     if (statusFilter !== 'all') result = result.filter(l => l.status === statusFilter)
     if (typeFilter !== 'all') result = result.filter(l => l.type === typeFilter)
+    // Sort
+    result = [...result].sort((a, b) => {
+      switch (sortBy) {
+        case 'date':
+          return new Date(b.lead_date || b.created_at).getTime() - new Date(a.lead_date || a.created_at).getTime()
+        case 'name':
+          return `${a.first_name} ${a.last_name}`.localeCompare(`${b.first_name} ${b.last_name}`)
+        case 'status':
+          return a.status.localeCompare(b.status)
+        case 'type':
+          return a.type.localeCompare(b.type)
+        case 'passed_to':
+          return ((a as any).passed_to || 'zzz').localeCompare((b as any).passed_to || 'zzz')
+        default:
+          return 0
+      }
+    })
     setFiltered(result)
-  }, [leads, search, sourceFilter, statusFilter, typeFilter])
+  }, [leads, search, sourceFilter, statusFilter, typeFilter, sortBy])
 
   const handleDelete = async (id: string) => {
     const { error } = await supabase.from('leads').delete().eq('id', id)
@@ -166,6 +184,14 @@ export default function DashboardPage() {
               <option value="all">All Types</option>
               <option value="residential">Residential</option>
               <option value="commercial">Commercial</option>
+            </select>
+            <select value={sortBy} onChange={e => setSortBy(e.target.value)}
+              className="rounded-lg text-sm px-3 py-2 focus:outline-none" style={{ ...inputStyle, borderColor: 'rgba(48,130,168,0.4)' }}>
+              <option value="date">Sort: Date</option>
+              <option value="name">Sort: Name (A-Z)</option>
+              <option value="status">Sort: Status</option>
+              <option value="type">Sort: Lead Type</option>
+              <option value="passed_to">Sort: Passed To</option>
             </select>
           </div>
           <p className="text-xs mt-2" style={{ color: '#3D6E8A' }}>Showing {filtered.length} of {leads.length} leads</p>

@@ -258,6 +258,13 @@ export default function LeadProfilePage() {
                     ? <input style={inp} value={editData.address || ''} placeholder="123 Main St, City, State" onChange={e => setEditData({ ...editData, address: e.target.value })} />
                     : <p style={{ fontSize: '14px', color: lead.address ? '#D4EAF7' : '#3D6E8A', fontStyle: lead.address ? 'normal' : 'italic' }}>{lead.address || 'Not provided'}</p>}
                 </div>
+                {/* Passed To */}
+                <div className="sm:col-span-2">
+                  <label style={lbl}>Passed Lead To</label>
+                  {editing
+                    ? <input style={inp} value={(editData as any).passed_to || ''} placeholder="Salesperson name..." onChange={e => setEditData({ ...editData, passed_to: e.target.value } as any)} />
+                    : <p style={{ fontSize: '14px', color: (lead as any).passed_to ? '#D4EAF7' : '#3D6E8A', fontStyle: (lead as any).passed_to ? 'normal' : 'italic' }}>{(lead as any).passed_to || 'Not assigned'}</p>}
+                </div>
               </div>
 
               {/* Edit: type + source selectors */}

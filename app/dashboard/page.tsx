@@ -197,7 +197,7 @@ export default function DashboardPage() {
               <table className="w-full">
                 <thead>
                   <tr style={{ backgroundColor: '#07111E', borderBottom: '1px solid rgba(48,130,168,0.2)' }}>
-                    {['Customer', 'Phone', 'Address', 'Source', 'Status', 'Date of Lead', ''].map(h => (
+                    {['Customer', 'Phone', 'Passed To', 'Source', 'Status', 'Date of Lead', ''].map(h => (
                       <th key={h} className="text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide" style={{ color: '#3D6E8A' }}>{h}</th>
                     ))}
                   </tr>
@@ -228,6 +228,11 @@ export default function DashboardPage() {
                         {lead.phone && <div className="flex items-center gap-1.5 text-sm" style={{ color: '#6FA8C8' }}>
                           <Phone className="w-3.5 h-3.5" style={{ color: '#3D6E8A' }} />{lead.phone}
                         </div>}
+                      </td>
+                      <td className="px-4 py-4">
+                        {(lead as any).passed_to
+                          ? <span className="text-sm font-medium" style={{ color: '#4AAECF' }}>{(lead as any).passed_to}</span>
+                          : <span className="text-xs" style={{ color: '#3D6E8A' }}>—</span>}
                       </td>
                       <td className="px-4 py-4">
                         {lead.address && <div className="flex items-center gap-1.5 text-sm max-w-[180px]" style={{ color: '#6FA8C8' }}>

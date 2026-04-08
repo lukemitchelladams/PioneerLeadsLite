@@ -9,10 +9,11 @@ import { Lead, LeadNote, LeadSource, LeadStatus, LeadType, LEAD_SOURCE_LABELS } 
 import { ArrowLeft, Edit3, Save, X, Send, Trash2, Clock, CheckCircle } from 'lucide-react'
 import { format, formatDistanceToNow } from 'date-fns'
 
-const LEAD_SOURCES: LeadSource[] = ['walk-in', 'phone-call', 'google-mb', 'angi', 'thumbtack', 'other']
+const LEAD_SOURCES: LeadSource[] = ['google-mb', 'google-maps', 'angi', 'thumbtack', 'facebook', 'instagram', 'linkedin', 'other']
 const SOURCE_ICONS: Record<LeadSource, string> = {
-  'walk-in': '🚶', 'phone-call': '📞', 'google-mb': '🔍',
-  'angi': '🔧', 'thumbtack': '📌', 'other': '💬',
+  'google-mb': '🔍', 'google-maps': '🗺️', 'angi': '🔧',
+  'thumbtack': '📌', 'facebook': '📘', 'instagram': '📸',
+  'linkedin': '💼', 'other': '💬',
 }
 
 const STATUS_CONFIG: Record<LeadStatus, { label: string; bg: string; text: string; border: string; activeBg: string }> = {
@@ -20,6 +21,7 @@ const STATUS_CONFIG: Record<LeadStatus, { label: string; bg: string; text: strin
   contacted:          { label: 'Contacted',         bg: 'rgba(212,168,67,0.13)', text: '#D4A843', border: 'rgba(212,168,67,0.3)', activeBg: 'rgba(212,168,67,0.18)'  },
   'waiting-response': { label: 'Waiting Response',  bg: 'rgba(251,146,60,0.13)', text: '#FB923C', border: 'rgba(251,146,60,0.3)', activeBg: 'rgba(251,146,60,0.18)'  },
   quoted:             { label: 'Quoted',            bg: 'rgba(160,130,230,0.13)',text: '#C4AAED', border: 'rgba(160,130,230,0.3)',activeBg: 'rgba(160,130,230,0.18)' },
+  'passed-to-sales':  { label: 'Passed Off to Sales', bg: 'rgba(48,130,168,0.13)', text: '#4AAECF', border: 'rgba(48,130,168,0.3)', activeBg: 'rgba(48,130,168,0.18)' },
   'passed-to-sales':  { label: 'Passed Off to Sales', bg: 'rgba(48,130,168,0.13)', text: '#4AAECF', border: 'rgba(48,130,168,0.3)', activeBg: 'rgba(48,130,168,0.18)' },
   won:                { label: 'Won',               bg: 'rgba(92,201,138,0.13)', text: '#5CC98A', border: 'rgba(92,201,138,0.3)', activeBg: 'rgba(92,201,138,0.18)'  },
   lost:               { label: 'Lost',              bg: 'rgba(230,100,100,0.13)',text: '#E87070', border: 'rgba(230,100,100,0.3)',activeBg: 'rgba(230,100,100,0.18)' },

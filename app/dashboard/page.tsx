@@ -194,10 +194,10 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full" style={{ tableLayout: "fixed", minWidth: "100%" }}>
                 <thead>
                   <tr style={{ backgroundColor: '#07111E', borderBottom: '1px solid rgba(48,130,168,0.2)' }}>
-                    {['Customer', 'Phone', 'Passed To', 'Source', 'Status', 'Date of Lead', ''].map(h => (
+                    {['Customer', 'Phone', 'Source', 'Status', 'Date of Lead', 'Passed To', ''].map(h => (
                       <th key={h} className="text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide" style={{ color: '#3D6E8A' }}>{h}</th>
                     ))}
                   </tr>
@@ -230,11 +230,6 @@ export default function DashboardPage() {
                         </div>}
                       </td>
                       <td className="px-4 py-4">
-                        {(lead as any).passed_to
-                          ? <span className="text-sm font-medium" style={{ color: '#4AAECF' }}>{(lead as any).passed_to}</span>
-                          : <span className="text-xs" style={{ color: '#3D6E8A' }}>—</span>}
-                      </td>
-                      <td className="px-4 py-4">
                         {lead.address && <div className="flex items-center gap-1.5 text-sm max-w-[180px]" style={{ color: '#6FA8C8' }}>
                           <MapPin className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#3D6E8A' }} />
                           <span className="truncate">{lead.address}</span>
@@ -247,6 +242,16 @@ export default function DashboardPage() {
                           <Calendar className="w-3.5 h-3.5" />
                           {lead.lead_date ? format(new Date(lead.lead_date + 'T12:00:00'), 'MMM d, yyyy') : format(new Date(lead.created_at), 'MMM d, yyyy')}
                         </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        {(lead as any).passed_to
+                          ? <span className="text-sm font-medium" style={{ color: '#4AAECF' }}>{(lead as any).passed_to}</span>
+                          : <span className="text-xs" style={{ color: '#3D6E8A' }}>—</span>}
+                      </td>
+                      <td className="px-4 py-4">
+                        {(lead as any).passed_to
+                          ? <span className="text-sm font-medium" style={{ color: '#4AAECF' }}>{(lead as any).passed_to}</span>
+                          : <span className="text-xs" style={{ color: '#3D6E8A' }}>—</span>}
                       </td>
                       <td className="px-4 py-4">
                         <div className="flex items-center gap-1 justify-end">

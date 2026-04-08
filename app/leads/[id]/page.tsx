@@ -44,12 +44,14 @@ export default function LeadProfilePage() {
   const [newNote, setNewNote] = useState('')
   const [addingNote, setAddingNote] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)
+  const [passedTo, setPassedTo] = useState('')
+  const [savingPassedTo, setSavingPassedTo] = useState(false)
   const [saveError, setSaveError] = useState('')
   const [editData, setEditData] = useState<Partial<Lead>>({})
 
   const fetchLead = useCallback(async () => {
     const { data } = await supabase.from('leads').select('*').eq('id', id).single()
-    if (data) { setLead(data); setEditData(data) }
+    if (data) { setLead(data); setEditData(data); setPassedTo((data as any).passed_to || '') }
     setLoading(false)
   }, [id, supabase])
 
@@ -104,6 +106,18 @@ export default function LeadProfilePage() {
   }
 
   const handleCancelEdit = () => { setEditData(lead || {}); setEditing(false) }
+
+  const handleSavePassedTo = async () => {
+    setSavingPassedTo(true)
+    const { data } = await supabase
+      .from('leads')
+      .update({ passed_to: passedTo.trim() || null, updated_at: new Date().toISOString() })
+      .eq('id', id)
+      .select()
+      .single()
+    if (data) setLead(data)
+    setSavingPassedTo(false)
+  }
 
   if (loading) {
     return (
@@ -393,6 +407,22 @@ export default function LeadProfilePage() {
                   )
                 })}
               </div>
+            </div>
+
+            {/* Passed Lead To */}
+            <div style={card}>
+              <div style={{ fontSize: '10px', fontWeight: 600, color: '#3D6E8A', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '10px' }}>
+                Passed Lead To
+              </div>
+              <input
+                type="text"
+                value={passedTo}
+                onChange={e => setPassedTo(e.target.value)}
+                onBlur={handleSavePassedTo}
+                placeholder="Enter salesperson name..."
+                style={{ width: '100%', padding: '7px 10px', backgroundColor: '#152840', border: '1px solid rgba(48,130,168,0.25)', borderRadius: '7px', fontSize: '13px', color: '#D4EAF7', outline: 'none' }}
+              />
+              <p style={{ fontSize: '10px', color: '#3D6E8A', marginTop: '5px' }}>Auto-saves when you click away</p>
             </div>
 
             {/* Lead Source */}
